@@ -171,14 +171,6 @@ Controls motor rotation using the L293D motor driver.
 
 ---
 
-## 🖼 Proteus Simulation
-
-The following image shows the Proteus simulation used for testing UART-based motor control.
-
-![Dc_Motor_UART](PWM_DC_Motor.png)
-
----
-
 ## 🚀 How to Run
 
 ### Step 1

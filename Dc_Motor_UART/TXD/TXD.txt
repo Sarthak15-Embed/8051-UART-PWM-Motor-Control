@@ -1,0 +1,59 @@
+/*Hence TMOD |=0x20; (or) TMOD =0b00100000;
+           _________________________________________
+           | B7 | B6 | B5 | B4 | B3 | B2 | B1 | B0 |
+           -----------------------------------------
+           |Gate| C/T| M1 | M0 |Gate| C/T| M1 | M0 |
+           -----------------------------------------
+           | 0  |  0 |  1 |  0 |  0 |  0 |  0 |  0 |
+           ------------------------------------------
+		SCON=OX50; or SCON=0b01010000;			 
+					 ------------------------------------------
+					 | SM0| SM1| SM2| REN| TB8| RB8| TI | RI |
+					 -----------------------------------------
+           | 0  |  1 |  0 |  1 |  0 |  0 |  0 |  0 |
+           ------------------------------------------
+
+REFER PAGE NUMBER 26 OF INTEL 8051 USER MANUAL IN FOLDER 8051 DATASHEET*/
+#include<reg51.h>
+#include<uart.h>
+void timer_delay(int);
+char tx_data,count=0;
+bit flag=0;
+void ISR_Speed(void)interrupt 0
+{
+		if(count<5)
+		count++;
+		if(count==5)
+		 count=1;
+		tx_data=count+'0';
+		
+}
+void ISR_Direct(void)interrupt 2
+{
+	flag=~flag;
+	if(flag==0)
+	{
+		tx_data='A';
+	}
+	else
+	{
+		tx_data='B';
+	}
+}
+void main()
+{
+	UART_Init();
+	EA=1;
+	EX0=1;
+	EX1=1;
+	IT0=1;
+	IT1=1;
+	while(1)
+	{
+		UART_Tx(tx_data);
+	}
+}
+
+//run code
+
+

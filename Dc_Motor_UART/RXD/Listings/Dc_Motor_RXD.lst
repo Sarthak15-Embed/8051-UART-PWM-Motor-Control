@@ -1,0 +1,142 @@
+C51 COMPILER V9.59.0.0   DC_MOTOR_RXD                                                      04/22/2026 23:12:50 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE DC_MOTOR_RXD
+OBJECT MODULE PLACED IN .\Objects\Dc_Motor_RXD.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Dc_Motor_RXD.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listi
+                    -ngs\Dc_Motor_RXD.lst) TABS(2) OBJECT(.\Objects\Dc_Motor_RXD.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include<uart.h>
+   3          
+   4          void timer_delay(int);
+   5          
+   6          sbit IN1 = P0^0;
+   7          sbit IN2 = P0^1;
+   8          sbit En  = P0^2;
+   9          
+  10          char speed = 4;
+  11          bit direction = 0;
+  12          
+  13          void main()
+  14          {
+  15   1          char Rx_data;
+  16   1      
+  17   1          TMOD |= 0x01;
+  18   1      
+  19   1          UART_Init();
+  20   1      
+  21   1          while(1)
+  22   1          {
+  23   2              // Receive UART Data
+  24   2      
+  25   2              if(RI == 1)
+  26   2              {
+  27   3                  Rx_data = UART_Rx();
+  28   3      
+  29   3                  // Direction Control
+  30   3      
+  31   3                  if(Rx_data == 'A')
+  32   3                  {
+  33   4                      direction = 0;
+  34   4                  }
+  35   3      
+  36   3                  else if(Rx_data == 'B')
+  37   3                  {
+  38   4                      direction = 1;
+  39   4                  }
+  40   3      
+  41   3                  // Speed Control
+  42   3      
+  43   3                  else if(Rx_data >= '1' && Rx_data <= '4')
+  44   3                  {
+  45   4                      speed = Rx_data - '0';
+  46   4                  }
+  47   3              }
+  48   2      
+  49   2              // Apply Direction
+  50   2      
+  51   2              if(direction == 0)
+  52   2              {
+  53   3                  IN1 = 1;
+  54   3                  IN2 = 0;
+C51 COMPILER V9.59.0.0   DC_MOTOR_RXD                                                      04/22/2026 23:12:50 PAGE 2   
+
+  55   3              }
+  56   2              else
+  57   2              {
+  58   3                  IN1 = 0;
+  59   3                  IN2 = 1;
+  60   3              }
+  61   2      
+  62   2              // PWM Speed Control
+  63   2      
+  64   2              if(speed == 1)
+  65   2              {
+  66   3                  En = 1;
+  67   3                  timer_delay(1);
+  68   3      
+  69   3                  En = 0;
+  70   3                  timer_delay(3);
+  71   3              }
+  72   2      
+  73   2              else if(speed == 2)
+  74   2              {
+  75   3                  En = 1;
+  76   3                  timer_delay(2);
+  77   3      
+  78   3                  En = 0;
+  79   3                  timer_delay(2);
+  80   3              }
+  81   2      
+  82   2              else if(speed == 3)
+  83   2              {
+  84   3                  En = 1;
+  85   3                  timer_delay(3);
+  86   3      
+  87   3                  En = 0;
+  88   3                  timer_delay(1);
+  89   3              }
+  90   2      
+  91   2              else if(speed == 4)
+  92   2              {
+  93   3                  En = 1;
+  94   3              }
+  95   2          }
+  96   1      }
+  97          
+  98          void timer_delay(int time)
+  99          {
+ 100   1          char i;
+ 101   1      
+ 102   1          for(i = 0; i < time; i++)
+ 103   1          {
+ 104   2              TH0 = 0xEE;
+ 105   2              TL0 = 0x00;
+ 106   2      
+ 107   2              TR0 = 1;
+ 108   2      
+ 109   2              while(TF0 == 0);
+ 110   2      
+ 111   2              TR0 = 0;
+ 112   2              TF0 = 0;
+ 113   2          }
+ 114   1      }
+
+
+C51 COMPILER V9.59.0.0   DC_MOTOR_RXD                                                      04/22/2026 23:12:50 PAGE 3   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    220    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

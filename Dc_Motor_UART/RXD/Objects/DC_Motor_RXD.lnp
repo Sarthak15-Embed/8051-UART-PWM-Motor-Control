@@ -1,0 +1,5 @@
+".\Objects\STARTUP.obj",
+".\Objects\Dc_Motor_RXD.obj",
+".\Objects\uart.obj" 
+TO ".\Objects\DC_Motor_RXD" 
+PRINT(".\Listings\DC_Motor_RXD.m51")

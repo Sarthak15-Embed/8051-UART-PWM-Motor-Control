@@ -1,0 +1,63 @@
+C51 COMPILER V9.59.0.0   RXD                                                               04/04/2026 16:18:33 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE RXD
+OBJECT MODULE PLACED IN .\Objects\RXD.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE RXD.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\RXD.l
+                    -st) TABS(2) OBJECT(.\Objects\RXD.obj)
+
+line level    source
+
+   1          /*Hence TMOD |=0x20; (or) TMOD =0b00100000;
+   2                     _________________________________________
+   3                     | B7 | B6 | B5 | B4 | B3 | B2 | B1 | B0 |
+   4                     -----------------------------------------
+   5                     |Gate| C/T| M1 | M0 |Gate| C/T| M1 | M0 |
+   6                     -----------------------------------------
+   7                     | 0  |  0 |  1 |  0 |  0 |  0 |  0 |  0 |
+   8                     ------------------------------------------
+   9              SCON=OX50; or SCON=0b01010000;       
+  10                     ------------------------------------------
+  11                     | SM0| SM1| SM2| REN| TB8| RB8| TI | RI |
+  12                     -----------------------------------------
+  13                     | 0  |  1 |  0 |  1 |  0 |  0 |  0 |  0 |
+  14                     ------------------------------------------
+  15          
+  16          REFER PAGE NUMBER 26 OF INTEL 8051 USER MANUAL IN FOLDER 8051 DATASHEET*/
+  17          #include<reg51.h>
+  18          #include<RXD.h>
+  19          void UART_Init()
+  20          {
+  21   1        SCON=0x50;
+  22   1        TMOD |=0x20;
+  23   1        TH1=0xFD;
+  24   1        TR1=1;
+  25   1      }
+  26          void UART_Tx(char Tx_data)
+  27          {
+  28   1        SBUF=Tx_data;
+  29   1        while(TI==0);
+  30   1        TI=0;
+  31   1      }
+  32          char UART_Rx()
+  33          {
+  34   1        while(RI==0);
+  35   1        RI=0;
+  36   1        return SBUF;
+  37   1      }
+  38          
+  39          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     28    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

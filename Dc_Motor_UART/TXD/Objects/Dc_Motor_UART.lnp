@@ -1,0 +1,6 @@
+".\Objects\STARTUP.obj",
+".\Objects\Dc_Motor_UART.obj",
+".\Objects\delay.obj",
+".\Objects\uart.obj" 
+TO ".\Objects\Dc_Motor_UART" 
+PRINT(".\Listings\Dc_Motor_UART.m51")
